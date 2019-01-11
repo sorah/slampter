@@ -13,7 +13,8 @@ interface State {
 export default class StatusView extends React.Component<Props, State> {
   public render() {
     return <section>
-       <p>{this.props.tick.toString()}</p>
+       <p>L {this.tickLocalString()}</p>
+       <p>U {this.tickUtcString()}</p>
        <p>{this.latency()}</p>
        <p>{this.lastUpdatedAgoString()}</p>
     </section>;
@@ -25,5 +26,13 @@ export default class StatusView extends React.Component<Props, State> {
 
   public lastUpdatedAgoString() {
     return moment(this.props.lastUpdatedTime).fromNow();
+  }
+
+  public tickLocalString() {
+    return moment(this.props.tick).format('HH:mm:ss');
+  }
+
+  public tickUtcString() {
+    return moment(this.props.tick).utc().format('HH:mm:ss');
   }
 }
