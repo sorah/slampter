@@ -1,5 +1,12 @@
 import React from "react";
 
+enum TimerStatus {
+  Off = 'off',
+  Standby = 'standby',
+  Running = 'running',
+  Overrun = 'overrun',
+}
+
 interface Props {
   tick: number,
   headline: string,
@@ -13,18 +20,21 @@ export default class TimerView extends React.Component<Props, State> {
   public render() {
     return <section>
       <p>{this.props.headline}</p>
+      <p>{this.timerStatus()}</p>
       <p>{this.timerString()}</p>
     </section>;
   }
 
   public timerString() {
     var duration = null;
-    if (this.props.startTime && this.props.tick < this.props.startTime) {
-      duration = this.props.startTime - this.props.tick;
-    } else if (this.props.endTime && this.props.tick < this.props.endTime) {
-      duration = this.props.endTime - this.props.tick;
-    } else if (this.props.endTime && this.props.endTime < this.props.tick) {
-      duration = this.props.tick - this.props.endTime;
+    const timerStatus = this.timerStatus();
+    switch (timerStatus) {
+      case TimerStatus.Standby:
+        duration = this.props.startTime && this.props.startTime - this.props.tick;
+      case TimerStatus.Running:
+        duration = this.props.endTime && this.props.endTime - this.props.tick;
+      case TimerStatus.Overrun:
+        duration = this.props.endTime && this.props.tick - this.props.endTime;
     }
 
     if (duration) {
@@ -32,6 +42,17 @@ export default class TimerView extends React.Component<Props, State> {
     } else {
       return "--:--:--";
     }
+  }
+
+  public timerStatus() {
+    if (this.props.startTime && this.props.tick < this.props.startTime) {
+      return TimerStatus.Standby;
+    } else if (this.props.endTime && this.props.tick < this.props.endTime) {
+      return TimerStatus.Running;
+    } else if (this.props.endTime && this.props.endTime < this.props.tick) {
+      return TimerStatus.Overrun;
+    }
+    return TimerStatus.Off;
   }
 
   private formatDuration(duration: number) {
