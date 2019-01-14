@@ -125,6 +125,7 @@ body {
 
 .message-view {
   position: relative;
+  height: 60vh;
   &::before {
     // blink
     position: absolute;
@@ -136,10 +137,13 @@ body {
     left: 0;
     background-color: #4AA0B5;
     opacity: 0;
+    border-radius: 4px;
   }
   &.message-view-blink::before {
     animation: blink 1s 0s infinite;
   }
+
+  padding: 6px;
 
   overflow: hidden;
   &, & * {
