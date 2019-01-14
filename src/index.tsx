@@ -10,8 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
     elem,
   ) as App;
 
-  setInterval(() => component.tick(), 500);
-
   const dataUrl = location.pathname.replace(/^\/p\//,'/data/');
   const fetchData = async function() {
     try {
@@ -40,6 +38,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     setTimeout(fetchDataLoop, interval);
   };
+
+  const tickLoop = () => {
+    const now = new Date();
+    component.tick(now);
+    setTimeout(tickLoop, now.getTime() % 1000);
+  }
 
   fetchDataLoop();
 });

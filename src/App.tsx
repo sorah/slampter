@@ -34,8 +34,8 @@ export default class App extends React.Component<Props, State> {
     };
   }
 
-  public tick() {
-    const date = new Date();
+  public tick(date?: Date) {
+    date = date || new Date();
     this.setState({tick: date.getTime(), tickDate: date});
   }
 
