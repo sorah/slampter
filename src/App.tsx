@@ -52,7 +52,7 @@ export default class App extends React.Component<Props, State> {
     return <main>
       <StatusView
         tick={this.state.tickDate}
-        serverTime={new Date(this.state.promptData.st * 1000)}
+        serverTime={new Date(this.state.promptData.st)}
         lastUpdatedTime={new Date(this.state.promptData.ts * 1000)}
         lastFetchTime={this.state.lastDataUpdate}
       />

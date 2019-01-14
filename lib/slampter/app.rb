@@ -85,7 +85,7 @@ module Slampter
       content_type :json
       data = store.get_by_key(params[:view_key])
       halt 404 unless data
-      data.as_json.merge(st: Time.now.to_i).to_json
+      data.as_json.merge(st: (Time.now.to_f * 1000).to_i).to_json
     end
   end
 end
