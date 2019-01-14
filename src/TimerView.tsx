@@ -22,16 +22,17 @@ export default class TimerView extends React.Component<Props, State> {
       <p className='headline'>{this.props.headline}</p>
       <div className='timer'>
         <div className='timer-left'>
-          <div className='timer-status'>
-            <div className='timer-status--show timer-status--show-off'>Off</div>
-            <div className='timer-status--show timer-status--show-standby'>Get Ready</div>
-            <div className='timer-status--show timer-status--show-running'>LIVE</div>
-            <div className='timer-status--show timer-status--show-overrun'>OVER</div>
-          </div>
+
           <div className='timer-mean'>
             <span className='timer-status--show timer-status--show-standby'>Starting in:</span>
             <span className='timer-status--show timer-status--show-running'>Time remaining:</span>
             <span className='timer-status--show timer-status--show-overrun'>Exceeding:</span>
+          </div>
+          <div className='timer-status'>
+            <div className='timer-status-text timer-status--show timer-status--show-off'>Off</div>
+            <div className='timer-status-text timer-status--show timer-status--show-standby'>STANDBY</div>
+            <div className='timer-status-text timer-status--show timer-status--show-running'>LIVE</div>
+            <div className='timer-status-text timer-status--show timer-status--show-overrun'>OVER</div>
           </div>
         </div>
         <div>

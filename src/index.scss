@@ -1,3 +1,8 @@
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.2; }
+  100% { opacity: 1; }
+}
 body {
   background-color: black;
   color: white;
@@ -16,6 +21,7 @@ body {
   align-items: center;
 
   .status-status {
+    color: gray;
     font-size: calc(18px + 2vh);
   }
 
@@ -29,6 +35,7 @@ body {
 }
 
 .timer-view  {
+  margin-bottom: 1.5vh;
   height: calc(32px + 30vh);
   .headline {
     width: 100%;
@@ -47,10 +54,31 @@ body {
       flex-basis: 20%;
     }
     .timer-status {
+      position: relative;
+      height: 20vh;
+      display: flex;
+      align-items: center;
       font-size: calc(12px + 10vh);
-      flex-basis: content;
+      border-radius: 7px;
+      margin-top: 1vh;
+      margin-bottom: 1vh;
+      .timer-status-text {
+        width: 100%;
+        text-align: center;
+      }
+      &::before {
+        position: absolute;
+        z-index: -1;
+        content: "";
+        border-radius: 7px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
     }
     .timer-mean {
+      height: 5vh;
       font-size: calc(8px + 3vh);
       text-align: right;
     }
@@ -66,6 +94,25 @@ body {
   &.timer-view_standby .timer-status--show-standby { display: block; }
   &.timer-view_running .timer-status--show-running { display: block; }
   &.timer-view_overrun .timer-status--show-overrun { display: block; }
+
+  &.timer-view_off .timer-status {
+    &::before { background-color: black; }
+    color: gray;
+  }
+  &.timer-view_standby .timer-status {
+    font-size: calc((12px + 6vh));
+    &::before { background-color: #F6C244; animation: blink 2s 0s infinite; }
+    color: black;
+  }
+  &.timer-view_running .timer-status {
+    &::before { background-color: green; }
+  }
+  &.timer-view_overrun .timer-status {
+    &::before { background-color: red; animation: blink 2s 0s infinite; }
+  }
+  &.timer-view_overrun .timer-display {
+    color: red;
+  }
 }
 
 .message-view {
@@ -78,3 +125,5 @@ body {
     margin: 0;
   }
 }
+
+
