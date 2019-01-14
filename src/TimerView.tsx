@@ -18,10 +18,28 @@ interface State {
 
 export default class TimerView extends React.Component<Props, State> {
   public render() {
-    return <section>
-      <p>{this.props.headline}</p>
-      <p>{this.timerStatus()}</p>
-      <p>{this.timerString()}</p>
+    return <section className={`timer-view timer-view_${this.timerStatus()}`}>
+      <p className='headline'>{this.props.headline}</p>
+      <div className='timer'>
+        <div className='timer-left'>
+          <div className='timer-status'>
+            <div className='timer-status--show timer-status--show-off'>Off</div>
+            <div className='timer-status--show timer-status--show-standby'>Get Ready</div>
+            <div className='timer-status--show timer-status--show-running'>LIVE</div>
+            <div className='timer-status--show timer-status--show-overrun'>OVER</div>
+          </div>
+          <div className='timer-mean'>
+            <span className='timer-status--show timer-status--show-standby'>Starting in:</span>
+            <span className='timer-status--show timer-status--show-running'>Time remaining:</span>
+            <span className='timer-status--show timer-status--show-overrun'>Exceeding:</span>
+          </div>
+        </div>
+        <div>
+          <div className='timer-display'>
+            {this.timerString()}
+          </div>
+        </div>
+      </div>
     </section>;
   }
 

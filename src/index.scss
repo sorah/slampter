@@ -1,0 +1,80 @@
+body {
+  background-color: black;
+  color: white;
+}
+
+#container {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.status-view {
+  height: calc(32px + 5vh);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .status-status {
+    font-size: calc(18px + 2vh);
+  }
+
+  .status-time {
+    font-size: calc(32px + 2vh);
+    .status-time-time {
+      font-size: calc(32px + 4vh);
+      font-family: 'Menlo', 'Consolas', monospace;
+    }
+  }
+}
+
+.timer-view  {
+  height: calc(32px + 30vh);
+  .headline {
+    width: 100%;
+    text-align: center;
+    font-size: calc(24px + 5vh);
+    margin: 0;
+    padding: 0;
+  }
+
+  .timer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    .timer-left {
+      flex-basis: 20%;
+    }
+    .timer-status {
+      font-size: calc(12px + 10vh);
+      flex-basis: content;
+    }
+    .timer-mean {
+      font-size: calc(8px + 3vh);
+      text-align: right;
+    }
+
+    .timer-display {
+      font-size: calc(32px + 20vh);
+      font-family: 'Menlo', 'Consolas', monospace;
+    }
+  }
+
+  .timer-status--show { display: none; }
+  &.timer-view_off .timer-status--show-off { display: block; }
+  &.timer-view_standby .timer-status--show-standby { display: block; }
+  &.timer-view_running .timer-status--show-running { display: block; }
+  &.timer-view_overrun .timer-status--show-overrun { display: block; }
+}
+
+.message-view {
+  overflow: hidden;
+  &, & * {
+    font-size: calc(40px + 10vh);
+  }
+  p {
+    padding: 0;
+    margin: 0;
+  }
+}

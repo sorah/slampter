@@ -9,6 +9,8 @@ interface State {
 
 export default class MessageView extends React.Component<Props, State> {
   public render() {
-    return <p>{this.props.message}</p>;
+    return <section className='message-view'>
+      <p>{this.props.message}</p>
+    </section>
   }
 }
