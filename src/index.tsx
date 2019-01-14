@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
     component.tick(now);
     setTimeout(tickLoop, now.getTime() % 1000);
   }
+  tickLoop();
 
   fetchDataLoop();
 });
