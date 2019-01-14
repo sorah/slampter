@@ -2,7 +2,8 @@ require 'json'
 
 module Slampter
   class SlashCommand
-    def initialize(enterprise_id: nil, team_id:, channel_id:, text:, store:, base_url:)
+    def initialize(command: nil, enterprise_id: nil, team_id:, channel_id:, text:, store:, base_url:)
+      @slash_command_name = command
       @enterprise_id = enterprise_id
       @team_id = team_id
       @channel_id = channel_id
@@ -14,6 +15,7 @@ module Slampter
     end
 
     attr_reader :enterprise_id, :team_id, :channel_id, :text, :store, :base_url
+    attr_reader :slash_command_name
 
     def result
       return @result if defined? @result
@@ -56,7 +58,20 @@ module Slampter
     end
 
     def cmd_help
-      {text: "#{base_url}/p/#{current.view_key}", response_type: "in_channel"}
+      url = "#{base_url}/p/#{current.view_key}"
+      {text: <<~EOF, response_type: "in_channel"}
+      *URL:* #{url}
+
+      `#{slash_command_name}` Help and URL
+      `#{slash_command_name} headline HEADLINE` Update headline
+      `#{slash_command_name} message MESSAGE` Update message
+      `#{slash_command_name} blink [DURATION]` Blink message
+      `#{slash_command_name} timer DURATION` Set timer
+      `#{slash_command_name} timer off` Reset timer to off
+      `#{slash_command_name} cue STBY REMAIN HEADLINE` Set timer with standby & headline
+
+      _DURATION, STBY, REMAIN_ can be specified in `1h2m5s` (relative) `@21:22:23` (UTC absolute) format. 
+      EOF
     end
 
     def cmd_default_message

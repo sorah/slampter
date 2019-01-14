@@ -64,6 +64,7 @@ module Slampter
       end
       content_type :json
       Slampter::SlashCommand.new(
+        command: params[:command],
         enterprise_id: params[:enterprise_id],
         team_id: params[:team_id],
         channel_id: params[:channel_id],
