@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
   ) as App;
 
   const dataUrl = location.pathname.replace(/^\/p\//,'/data/');
+
+  var stop = false;
   const fetchData = async function() {
     try {
       const response = await fetch(dataUrl, {credentials: 'include', cache: "no-cache"});
@@ -18,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const json = await response.json();
 
       component.feedData(json);
+      if (json.stop) stop = true;
     } catch (e) {
       console.log(e);
       return false;
@@ -36,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!result) {
       interval = 2000;
     }
+    if (stop) return;
     setTimeout(fetchDataLoop, interval);
   };
 
