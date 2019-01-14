@@ -42,6 +42,7 @@ module Slampter
       @command ||= {
         nil => :cmd_help,
         'message' => :cmd_message,
+        'clear' => :cmd_clear,
         'headline' => :cmd_headline,
         'blink' => :cmd_blink,
         'timer' => :cmd_timer,
@@ -65,6 +66,7 @@ module Slampter
       `#{slash_command_name}` Help and URL
       `#{slash_command_name} headline HEADLINE` Update headline
       `#{slash_command_name} message MESSAGE` Update message
+      `#{slash_command_name} clear` Clear message
       `#{slash_command_name} blink [DURATION]` Blink message
       `#{slash_command_name} timer DURATION` Set timer
       `#{slash_command_name} timer off` Reset timer to off
@@ -81,6 +83,11 @@ module Slampter
     def cmd_message(message: arguments_text)
       candidate.message = message
       {text: "Message sent", response_type: "in_channel"}
+    end
+
+    def cmd_clear
+      candidate.message = nil
+      {text: "Message cleared", response_type: "in_channel"}
     end
 
     def cmd_headline
