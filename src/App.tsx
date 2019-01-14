@@ -63,6 +63,7 @@ export default class App extends React.Component<Props, State> {
         endTime={this.state.promptData.timer_end}
       />
       <MessageView
+        tick={this.state.tick / 1000}
         message={this.state.promptData.message || ''}
         blinkEndTime={this.state.promptData.blink_end}
       />

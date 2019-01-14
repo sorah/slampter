@@ -124,6 +124,23 @@ body {
 }
 
 .message-view {
+  position: relative;
+  &::before {
+    // blink
+    position: absolute;
+    z-index: -1;
+    content: "";
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #4AA0B5;
+    opacity: 0;
+  }
+  &.message-view-blink::before {
+    animation: blink 1s 0s infinite;
+  }
+
   overflow: hidden;
   &, & * {
     font-size: calc(40px + 10vh);
