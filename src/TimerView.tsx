@@ -31,10 +31,13 @@ export default class TimerView extends React.Component<Props, State> {
     switch (timerStatus) {
       case TimerStatus.Standby:
         duration = this.props.startTime && this.props.startTime - this.props.tick;
+        break;
       case TimerStatus.Running:
         duration = this.props.endTime && this.props.endTime - this.props.tick;
+        break;
       case TimerStatus.Overrun:
         duration = this.props.endTime && this.props.tick - this.props.endTime;
+        break;
     }
 
     if (duration) {
