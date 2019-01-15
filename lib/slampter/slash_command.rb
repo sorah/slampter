@@ -47,6 +47,7 @@ module Slampter
         'blink' => :cmd_blink,
         'timer' => :cmd_timer,
         'cue' => :cmd_cue,
+        'timer-override' => :cmd_timer_override,
       }.fetch(command_and_arguments[0], :cmd_default_message)
     end
 
@@ -71,6 +72,7 @@ module Slampter
       `#{slash_command_name} timer DURATION` Set timer
       `#{slash_command_name} timer off` Reset timer to off
       `#{slash_command_name} cue STBY REMAIN HEADLINE` Set timer with standby & headline
+      `#{slash_command_name} timer-override DURATION HEADLINE` Override timer temporarily
 
       _DURATION, STBY, REMAIN_ can be specified in `1h2m5s` (relative) `@21:22:23` (UTC absolute) format. 
       EOF
@@ -119,6 +121,15 @@ module Slampter
           {text: "Error: cannot parse time specification", response_type: "in_channel"}
         end
       end
+    end
+
+    def cmd_timer_override
+      duration_str, headline = arguments_text.strip.split(/\s+/, 3)
+      timer_end = parse_time(duration_str)
+      store.put(current, ts: timer_end)
+      candidate.timer_end = timer_end
+      candidate.headline = headline
+      {text: "Timer overridden until #{format_time(candidate.timer_end)}", response_type: "in_channel"}
     end
 
     def cmd_cue
