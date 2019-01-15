@@ -10,6 +10,8 @@ end
 
 Dir.chdir(__dir__) do
   ENV['NODE_ENV'] = 'production'
-  system 'yarn'
+  system 'yarn' or raise
+  p Dir['./*']
+  p Dir['./node_modules/.bin/*']
   system './node_modules/.bin/webpack' or raise
 end
