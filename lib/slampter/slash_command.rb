@@ -151,13 +151,18 @@ module Slampter
         return {text: "Error: missing arguments (stby live [headline])", response_type: "in_channel"}
       end
       stby, live, headline = arguments
-      candidate.headline = headline if headline
-      candidate.timer_start = parse_time(stby)
-      candidate.timer_end = parse_time(live, base: candidate.timer_start)
 
-      unless candidate.timer_start && candidate.timer_end
+      timer_start = parse_time(stby)
+      timer_end = parse_time(live, base: candidate.timer_start)
+
+      unless timer_start && timer_end
         return {text: "Error: cannot parse time specification", response_type: "in_channel"}
       end
+
+      candidate.headline = headline if headline
+      candidate.message = nil
+      candidate.timer_start = timer_start
+      candidate.timer_end = timer_end
 
       {text: "Cue: Starts at #{format_time(candidate.timer_start)}, Ends at #{format_time(candidate.timer_end)}", response_type: "in_channel"}
     end
