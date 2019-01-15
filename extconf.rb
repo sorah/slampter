@@ -8,8 +8,8 @@ if File.exist?(File.join(__dir__, "public"))
   exit 0
 end
 
-Dir.chdir(__dir__)
-
-ENV['NODE_ENV'] = 'production'
-system 'yarn' or raise
-system './node_modules/.bin/webpack' or raise
+Dir.chdir(__dir__) do
+  ENV['NODE_ENV'] = 'production'
+  system 'yarn'
+  system './node_modules/.bin/webpack' or raise
+end
