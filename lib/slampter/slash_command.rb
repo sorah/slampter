@@ -48,6 +48,7 @@ module Slampter
         'timer' => :cmd_timer,
         'cue' => :cmd_cue,
         'timer-override' => :cmd_timer_override,
+        '-regenerate' => :cmd_regenerate,
       }.fetch(command_and_arguments[0], :cmd_default_message)
     end
 
@@ -75,6 +76,16 @@ module Slampter
       `#{slash_command_name} timer-override DURATION HEADLINE` Override timer temporarily
 
       _DURATION, STBY, REMAIN_ can be specified in `1h2m5s` (relative) `@21:22:23` (UTC absolute) format. 
+      EOF
+    end
+
+    def cmd_regenerate
+      record = store.create(channel_specifier)
+      store.put(record)
+
+      url = "#{base_url}/p/#{record.view_key}"
+      {text: <<~EOF, response_type: "in_channel"}
+      *URL:* #{url}
       EOF
     end
 
