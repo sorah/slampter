@@ -13,3 +13,5 @@ Dir.chdir(__dir__) do
   ENV['NODE_ENV'] = 'production'
   system './node_modules/.bin/webpack' or raise
 end
+File.write 'Makefile', "none:\n.PHONY: none\n"
+
