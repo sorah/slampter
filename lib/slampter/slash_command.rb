@@ -126,9 +126,12 @@ module Slampter
 
     def cmd_timer_override
       cmd_timer
-      if candidate.timer_end
+      if current.timer_end != candidate.timer_end
         store.put(current, ts: candidate.timer_end)
         {text: "Timer overridden until #{format_time(candidate.timer_end)}", response_type: "in_channel"}
+      else
+          {text: "Error: cannot parse time specification", response_type: "in_channel"}
+      end
     end
 
     def cmd_cue
