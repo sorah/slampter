@@ -9,7 +9,9 @@ if File.exist?(File.join(__dir__, "public"))
 end
 
 Dir.chdir(__dir__) do
+  system 'yarn' or raise
   ENV['NODE_ENV'] = 'production'
-  system 'yarn'
   system './node_modules/.bin/webpack' or raise
 end
+File.write 'Makefile', "install:\nnone:\n.PHONY: none\n"
+
