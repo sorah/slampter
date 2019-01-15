@@ -9,9 +9,7 @@ if File.exist?(File.join(__dir__, "public"))
 end
 
 Dir.chdir(__dir__) do
-  ENV['NODE_ENV'] = 'production'
   system 'yarn' or raise
-  p Dir['./*']
-  p Dir['./node_modules/.bin/*']
+  ENV['NODE_ENV'] = 'production'
   system './node_modules/.bin/webpack' or raise
 end

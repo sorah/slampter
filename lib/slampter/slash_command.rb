@@ -113,9 +113,10 @@ module Slampter
         candidate.timer_end = nil
         {text: "timer off", response_type: "in_channel"}
       else
-        candidate.timer_start = nil
-        candidate.timer_end = parse_time(arguments_text.strip)
+        duration_str, headline = arguments_text.strip.split(/\s+/, 2)
+        candidate.timer_end = parse_time(duration_str)
         if candidate.timer_end
+          candidate.headline = headline
           {text: "Timer set to #{format_time(candidate.timer_end)}", response_type: "in_channel"}
         else
           {text: "Error: cannot parse time specification", response_type: "in_channel"}
@@ -124,12 +125,10 @@ module Slampter
     end
 
     def cmd_timer_override
-      duration_str, headline = arguments_text.strip.split(/\s+/, 3)
-      timer_end = parse_time(duration_str)
-      store.put(current, ts: timer_end)
-      candidate.timer_end = timer_end
-      candidate.headline = headline
-      {text: "Timer overridden until #{format_time(candidate.timer_end)}", response_type: "in_channel"}
+      cmd_timer
+      if candidate.timer_end
+        store.put(current, ts: candidate.timer_end)
+        {text: "Timer overridden until #{format_time(candidate.timer_end)}", response_type: "in_channel"}
     end
 
     def cmd_cue
