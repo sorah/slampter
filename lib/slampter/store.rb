@@ -8,6 +8,7 @@ module Slampter
       timer_start
       timer_end
       headline
+      standby_headline
       message
       blink_end
     )

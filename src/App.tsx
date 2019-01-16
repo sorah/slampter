@@ -29,6 +29,7 @@ export default class App extends React.Component<Props, State> {
         timer_end: null,
         blink_end: null,
         message: null,
+        standby_headline: null,
         headline: null,
       },
     };
@@ -58,6 +59,7 @@ export default class App extends React.Component<Props, State> {
       />
       <TimerView
         tick={this.state.tick / 1000}
+        standbyHeadline={this.state.promptData.standby_headline}
         headline={this.state.promptData.headline || ''}
         startTime={this.state.promptData.timer_start}
         endTime={this.state.promptData.timer_end}

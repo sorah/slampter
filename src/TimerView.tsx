@@ -9,6 +9,7 @@ enum TimerStatus {
 
 interface Props {
   tick: number,
+  standbyHeadline: string | null,
   headline: string,
   startTime: number | null,
   endTime: number | null,
@@ -19,7 +20,7 @@ interface State {
 export default class TimerView extends React.Component<Props, State> {
   public render() {
     return <section className={`timer-view timer-view_${this.timerStatus()}`}>
-      <p className='headline'>{this.props.headline}</p>
+      <p className='headline'>{this.headline()}</p>
       <div className='timer'>
         <div className='timer-left'>
 
@@ -75,6 +76,15 @@ export default class TimerView extends React.Component<Props, State> {
       return TimerStatus.Overrun;
     }
     return TimerStatus.Off;
+  }
+
+  public headline() {
+    if (this.props.standbyHeadline) {
+      if (this.timerStatus() == TimerStatus.Standby) {
+        return this.props.standbyHeadline;
+      }
+    }
+    return this.props.headline;
   }
 
   private formatDuration(duration: number) {

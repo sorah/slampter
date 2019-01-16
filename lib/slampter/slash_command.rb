@@ -73,6 +73,7 @@ module Slampter
       `#{slash_command_name} timer DURATION` Set timer
       `#{slash_command_name} timer off` Reset timer to off
       `#{slash_command_name} cue STBY REMAIN HEADLINE` Set timer with standby & headline
+      `#{slash_command_name} cue STBY REMAIN STBY_HEADLINE --- HEADLINE` Set timer with standby & headline
       `#{slash_command_name} timer-override DURATION HEADLINE` Override timer temporarily
 
       _DURATION, STBY, REMAIN_ can be specified in `1h2m5s` (relative) `@21:22:23` (UTC absolute) format. 
@@ -104,6 +105,7 @@ module Slampter
     end
 
     def cmd_headline
+      candidate.standby_headline = nil
       candidate.headline = arguments_text
       {text: "Headline updated", response_type: "in_channel"}
     end
@@ -127,6 +129,7 @@ module Slampter
         duration_str, headline = arguments_text.strip.split(/\s+/, 2)
         candidate.timer_end = parse_time(duration_str)
         if candidate.timer_end
+          candidate.standby_headline = nil
           candidate.headline = headline
           {text: "Timer set to #{format_time(candidate.timer_end)}", response_type: "in_channel"}
         else
@@ -153,13 +156,24 @@ module Slampter
       stby, live, headline = arguments
 
       timer_start = parse_time(stby)
-      timer_end = parse_time(live, base: candidate.timer_start)
+      timer_end = parse_time(live, base: timer_start)
 
       unless timer_start && timer_end
         return {text: "Error: cannot parse time specification", response_type: "in_channel"}
       end
 
-      candidate.headline = headline if headline
+      stby_headline, live_headline = headline&.split(/\s+---\s+/, 2)
+      case
+      when stby_headline && live_headline
+        candidate.standby_headline = stby_headline
+        candidate.headline = live_headline
+      when stby_headline
+        candidate.standby_headline = nil
+        candidate.headline = stby_headline
+      else
+        candidate.standby_headline = nil
+      end
+
       candidate.message = nil
       candidate.timer_start = timer_start
       candidate.timer_end = timer_end

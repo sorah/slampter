@@ -5,5 +5,6 @@ export default interface PromptData {
   timer_end: number | null,
   blink_end: number | null,
   message: string | null,
+  standby_headline: string | null,
   headline: string | null,
 }
