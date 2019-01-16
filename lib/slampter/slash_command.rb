@@ -49,6 +49,7 @@ module Slampter
         'cue' => :cmd_cue,
         'timer-override' => :cmd_timer_override,
         '-regenerate' => :cmd_regenerate,
+        'live' => :cmd_live,
       }.fetch(command_and_arguments[0], :cmd_default_message)
     end
 
@@ -75,6 +76,7 @@ module Slampter
       `#{slash_command_name} cue STBY REMAIN HEADLINE` Set timer with standby & headline
       `#{slash_command_name} cue STBY REMAIN STBY_HEADLINE --- HEADLINE` Set timer with standby & headline
       `#{slash_command_name} timer-override DURATION HEADLINE` Override timer temporarily
+      `#{slash_command_name} live` Switch standby to live status
 
       _DURATION, STBY, REMAIN_ can be specified in `1h2m5s` (relative) `@21:22:23` (UTC absolute) format. 
       EOF
@@ -179,6 +181,19 @@ module Slampter
       candidate.timer_end = timer_end
 
       {text: "Cue: Starts at #{format_time(candidate.timer_start)}, Ends at #{format_time(candidate.timer_end)}", response_type: "in_channel"}
+    end
+
+    def cmd_live
+      now = Time.now
+      unless candidate.timer_start && candidate.timer_end && now < candidate.timer_start && now < candidate.timer_end
+        return {text: "Error: Not in standby state", response_type: "in_channel"}
+      end
+
+      duration = candidate.timer_end - candidate.timer_start 
+      candidate.timer_start = Time.now
+      candidate.timer_end = candidate.timer_start + duration
+
+      return {text: "LIVE until #{format_time(candidate.timer_end)}, duration #{duration}s", response_type: "in_channel"}
     end
 
 
